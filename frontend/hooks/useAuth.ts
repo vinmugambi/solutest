@@ -11,16 +11,19 @@ export const useAuth = () => {
 
   const checkAuthorization = () => {
     status.value = "pending";
-    $fetch<User>(profileEndpoint, {
+    return $fetch<User>(profileEndpoint, {
       credentials: "include",
     })
       .then((res) => {
         user.value = res;
         status.value = "success";
+
+        return res;
       })
       .catch(() => {
         user.value = null;
         status.value = "error";
+        return null;
       });
   };
 

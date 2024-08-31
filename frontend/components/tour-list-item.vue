@@ -41,28 +41,12 @@
 import { format } from 'date-fns';
 import type { Tour } from '~/types';
 
-// Define the Tour interface
-
-
-// Define the tour prop
 const props = defineProps<{
     tour: Tour
 }>()
 
 
-
-// Format the date
 const formatDate = (date: string) => {
     return format(new Date(date), 'd MMM yyyy')
 }
 </script>
-
-<style scoped>
-.btn-primary {
-    @apply bg-blue-600 text-white font-bold py-2 px-4 rounded;
-}
-
-.btn-primary:hover {
-    @apply bg-blue-700;
-}
-</style>

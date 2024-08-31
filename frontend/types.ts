@@ -42,6 +42,7 @@ export interface Booking {
   tickets: Ticket[];
   user: User;
   user_id: string;
+  tour: Tour;
 }
 
 export interface Ticket {
@@ -50,3 +51,13 @@ export interface Ticket {
   created_at: string;
   booking_id: string;
 }
+
+export type ToursSearchQuery = {
+  limit?: number;
+  destination_id?: string;
+  min_price?: number;
+  max_price?: number;
+  min_start_time?: string;
+  min_end_time?: string;
+  order_by?: string;
+};

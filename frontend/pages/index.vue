@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import type { Tour } from '~/types';
 
-definePageMeta({
-    layout: false,
-})
-
 var endpoint = useRuntimeConfig().public.toursEndpoint
 const { status, data: tours } = useFetch<Tour[]>(endpoint, {
     lazy: true

@@ -33,7 +33,7 @@ export function useFormSubmit<T>(
         data: result,
         error,
         status: resultStatus,
-      } = await useAsyncData("mountains", () =>
+      } = await useAsyncData(() =>
         withCookie && h3Event
           ? fetchWithCookie(h3Event, url, {
               ...reqOptions,
@@ -75,7 +75,7 @@ export function useFormSubmit<T>(
   };
 }
 
-export const fetchWithCookie = async (
+export const fetchWithCookie = async <T>(
   event: H3Event,
   url: string,
   options: any
@@ -90,5 +90,5 @@ export const fetchWithCookie = async (
     appendResponseHeader(event, "set-cookie", cookie);
   }
   /* Return the data of the response */
-  return res._data;
+  return res._data as T;
 };

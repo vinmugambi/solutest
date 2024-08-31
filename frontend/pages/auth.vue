@@ -4,7 +4,11 @@ import { useRoute, useRouter } from 'vue-router';
 import LoginForm from '~/components/forms/login.vue';
 import RegisterForm from '~/components/forms/register.vue';
 
-
+definePageMeta({
+    middleware: [
+        "user-already-authenticated"
+    ]
+})
 
 const items = [{
     slot: 'login',

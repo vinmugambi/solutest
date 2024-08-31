@@ -1,12 +1,19 @@
 <template>
     <div>
         <header>
-            <slot name="header">
-                Default header content
-            </slot>
+            <Navbar />
         </header>
-        <main>
+        <main class="flex flex-col gap-8 py-8 px-4">
             <slot />
         </main>
     </div>
 </template>
+
+<style>
+h1,
+h2,
+h3,
+h4 {
+    @apply font-serif;
+}
+</style>

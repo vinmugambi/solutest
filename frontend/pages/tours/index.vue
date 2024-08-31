@@ -1,7 +1,7 @@
 <template>
     <NuxtLayout>
         <div>
-            <BookingsTable :limit="1000" :page_size="20" />
+            <ToursTable :limit="1000" :page_size="20" />
         </div>
     </NuxtLayout>
 </template>
