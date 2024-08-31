@@ -22,9 +22,11 @@ class StoreTourRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'destination_id' => 'required|exists:destinations,id',
+            'destination_id' => 'exists:destinations,id',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+            'destination_name' => 'string',
+            'destination_description' => 'string',
             'price' => 'required|numeric',
             'slots' => 'required|integer',
             'start_time' => 'required|date|after:now'

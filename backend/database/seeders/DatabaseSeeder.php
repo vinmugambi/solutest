@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Booking;
+use App\Models\Ticket;
 use App\Models\Tour;
 use App\Models\User;
 use Database\Factories\TourFactory;
@@ -30,5 +32,10 @@ class DatabaseSeeder extends Seeder
             'role' => 'user',
             'password' => 'password'
         ]);
+
+
+        Booking::factory()->count(5)->create();
+        Booking::factory()->create(["user_id" => $user->id]);
+        Ticket::factory()->count(5)->create();
     }
 }
