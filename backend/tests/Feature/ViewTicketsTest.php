@@ -14,17 +14,22 @@ class ViewTicketsTest extends TestCase
     /** @test */
     public function admins_can_view_all_tickets()
     {
+        /** @var \App\Models\User $admin */
         $admin = User::factory()->create(['role' => 'admin']);
-        $user = User::factory()->create(['role' => 'user']);
         Ticket::factory()->count(5)->create();
 
-        // Admin can view all tickets
         $this->actingAs($admin)
             ->get('/tickets')
             ->assertStatus(200)
             ->assertJsonCount(5);
+    }
 
-        // Non-admin users cannot view all tickets
+    public function non_admins_can_only_view_their_own_tickets()
+    {
+        /** @var \App\Models\User $user*/
+        $user = User::factory()->create(['role' => 'user']);
+        Ticket::factory()->count(5)->create();
+
         $this->actingAs($user)
             ->get('/tickets')
             ->assertStatus(403);
