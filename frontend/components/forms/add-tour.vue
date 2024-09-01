@@ -3,7 +3,7 @@
     <UForm :schema="createTourSchema" :state="createTourForm" class="space-y-4" @submit="onSubmit">
         <div class="mt-8">
             <p class="pb-4 text-xl font-serif font-semibold leading-6 text-gray-900 dark:text-white">
-                Create a Tour
+                New Tour
             </p>
 
             <UFormGroup label="Destination ID" name="destination_id" class="mb-3">

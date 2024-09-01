@@ -1,3 +1,0 @@
-<template>
-    single tour
-</template>

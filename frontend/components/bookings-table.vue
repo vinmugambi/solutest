@@ -9,16 +9,21 @@
         </div>
         <div>
             <div class="flex p-3 justify-between">
-                <h2 class="text-3xl font-semibold">Bookings</h2>
-                <UInput v-model="q" placeholder="Filter bookings" />
-
+                <UInput v-if="query.filterable" v-model="q" placeholder="Filter bookings" />
 
             </div>
 
-            <UTable :columns="columns" :rows="rows" :loading="status == 'pending'" />
+            <UTable :columns="columns" :rows="rows" :loading="status == 'pending'">
+
+                <template #view-data="{ row }">
+                    <NuxtLink class="text-primary font-medium hover:underline" :to="`/bookings/${row.id}`">
+                        view
+                    </NuxtLink>
+                </template>
+            </UTable>
 
             <div class="flex justify-between p-3">
-                <UPagination v-if="filteredRows?.length" v-model="page" :page-count="pageCount"
+                <UPagination v-if="query.pageable && filteredRows?.length" v-model="page" :page-count="pageCount"
                     :total="filteredRows?.length || 0" />
             </div>
         </div>
@@ -32,9 +37,12 @@ const query = defineProps({
     limit: Number,
     order_by: String,
     page_size: Number,
+    filterable: Boolean,
+    pageable: Boolean
 })
 
 var endpoint = useRuntimeConfig().public.bookingsEndpoint
+const headers = useRequestHeaders(['cookie'])
 
 const {
     data,
@@ -43,13 +51,13 @@ const {
 } = await useFetch<Booking[]>(endpoint, {
     credentials: "include",
     query,
-    server: false
+    headers,
 })
 
 var items = data?.value?.map(item => ({
     id: item.id,
     tour: item.tour.name,
-    tickets: item.tickets.length,
+    tickets: item.tickets?.length || 0,
     booker: item.user.name,
 }))
 
@@ -66,12 +74,15 @@ const columns = [
     {
         key: 'booker',
         label: 'Booker',
-        sortable: true
     }, {
         key: 'tickets',
         label: 'Tickets',
         sortable: true,
-    }]
+    },
+    {
+        key: 'view'
+    }
+]
 
 const q = ref('')
 

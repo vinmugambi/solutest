@@ -1,7 +1,8 @@
 <template>
     <NuxtLayout>
         <div>
-            <TicketsTable :limit="1000" :page_size="20" />
+            <h1 class="text-4xl font-bold p-4">Tickets</h1>
+            <TicketsTable :filterable="true" :pageable="true" :limit="1000" :page_size="20" />
         </div>
     </NuxtLayout>
 </template>

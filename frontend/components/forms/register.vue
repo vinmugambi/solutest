@@ -59,7 +59,6 @@ type RegisterSchema = InferType<typeof registerSchema>;
 const registerForm = reactive({ email: '', password: '', name: '' });
 
 const registerEndpoint = useRuntimeConfig().public.registerEndpoint;
-const event = useRequestEvent();
 
 const {
     errorMessage: errorMessage,

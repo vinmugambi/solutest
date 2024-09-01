@@ -3,7 +3,7 @@
     <UForm :schema="createDestinationSchema" :state="createDestinationForm" class="space-y-4" @submit="onSubmit">
         <div class="mt-8">
             <p class="pb-4 text-xl font-serif font-semibold leading-6 text-gray-900 dark:text-white">
-                Create a Destination
+                New destination
             </p>
 
             <UFormGroup label="Name" name="name" class="mb-3">

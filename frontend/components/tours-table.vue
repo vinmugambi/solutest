@@ -5,27 +5,28 @@
 
         <div v-if="error">
             Something went wrong
+            {{ error }}
         </div>
-        <div v-else-if="filteredRows?.length">
-            <div class="flex p-3 justify-between">
-                <h2 class="text-3xl font-semibold">Tours</h2>
-                <UInput v-model="q" placeholder="Filter tours" />
-
-
+        <div>
+            <div class="flex px-4 py-2 gap-4">
+                <UInput v-if="query.filterable" v-model="q" placeholder="Search" />
+                <slot>
+                </slot>
             </div>
 
             <UTable :columns="columns" :rows="rows" :loading="status == 'pending'">
-                <template #empty-state>
-                    <div class="flex flex-col items-center justify-center py-6 gap-3">
-                        <span class="italic text-sm">No one here!</span>
-                        <UButton to="/tours/create" label="tour" />
-                    </div>
+
+                <template #view-data="{ row }">
+                    <NuxtLink class="text-primary font-medium hover:underline" :to="`/tours/${row.id}`">
+                        view
+                    </NuxtLink>
                 </template>
             </UTable>
 
+
             <div class="flex justify-between p-3">
-                <UPagination v-model="page" :page-count="pageCount" :total="filteredRows?.length || 0" />
-                <UButton to="tours/create" class="ml-auto">Add tour</UButton>
+                <UPagination v-if="query.pageable && filteredRows?.length" v-model="page" :page-count="pageCount"
+                    :total="filteredRows?.length || 0" />
             </div>
         </div>
     </div>
@@ -43,42 +44,63 @@ const query = defineProps({
     min_end_time: String,
     order_by: String,
     page_size: Number,
+    pageable: {
+        type: Boolean,
+        default: false
+    },
+    filterable: {
+        type: Boolean,
+        default: false
+    }
 })
 
 var endpoint = useRuntimeConfig().public.toursEndpoint
+const headers = useRequestHeaders(['cookie'])
 
-const { status, data, error } = useFetch<Tour[]>(endpoint, {
-    lazy: true,
-    query
+const {
+    data,
+    error,
+    status,
+} = await useFetch<Tour[]>(endpoint, {
+    credentials: "include",
+    query,
+    headers,
 })
+
+var items = data?.value?.map(item => ({
+    id: item.id,
+    name: item.name,
+    booked: `${item.capacity - item.slots} of ${item.capacity}`,
+    destination: item.destination.name,
+    view: ""
+}))
 
 const columns = [
     {
         key: 'name',
         label: 'Name',
-    }, {
+    },
+    {
+        key: 'booked',
+        label: 'Booked',
+    },
+    {
         key: 'destination',
         label: 'Destination',
-        sortable: true
-    }, {
-        key: 'tickets',
-        label: 'Tickets',
         sortable: true,
-        direction: 'desc' as const
     }, {
-        key: 'price',
-        label: 'Price',
-        sortable: true
-    }]
+        key: 'view'
+    }
+]
 
 const q = ref('')
 
 const filteredRows = computed(() => {
     if (!q.value) {
-        return tours
+        return items
     }
 
-    return tours?.filter((tour) => {
+    return items?.filter((tour) => {
         return Object.values(tour).some((value) => {
             return String(value).toLowerCase().includes(q.value.toLowerCase())
         })
@@ -92,11 +114,6 @@ const rows = computed(() => {
     return filteredRows.value?.slice((page.value - 1) * pageCount, (page.value) * pageCount)
 })
 
-var tours = data?.value?.map(tour => ({
-    name: tour.name,
-    destination: tour.destination.name,
-    tickets: `${tour.capacity - tour.slots} of ${tour.capacity}`,
-    price: tour.price.toFixed(0),
-}))
+
 
 </script>

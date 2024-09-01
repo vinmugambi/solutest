@@ -1,7 +1,8 @@
 <template>
     <NuxtLayout>
+        <h1 class="text-4xl font-bold p-4">Tours</h1>
         <div>
-            <ToursTable :limit="1000" :page_size="20" />
+            <ToursTable :filterable="true" :pageable="true" :limit="1000" :page_size="10" />
         </div>
     </NuxtLayout>
 </template>

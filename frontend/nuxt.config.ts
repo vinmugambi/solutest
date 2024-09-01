@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   modules: ["@nuxt/ui", "@nuxt/image"],
   runtimeConfig: {
     public: {
-      toursEndpoint: apiBase + "/tours",
+      toursEndpoint: apiBase + "/api/tours",
       bookingsEndpoint: apiBase + "/bookings",
       ticketsEndpoint: apiBase + "/tickets",
       loginEndpoint: apiBase + "/login",

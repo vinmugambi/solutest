@@ -25,7 +25,7 @@ const tabIndex = ref(route.query.action === "register" ? 1 : 0);
 
 
 function onLoginSuccess() {
-    router.push("/app");
+    router.push("/dashboard");
 }
 
 function onRegisterSuccess() {

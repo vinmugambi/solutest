@@ -3,7 +3,7 @@ import AddTour from '~/components/forms/add-tour.vue';
 </script>
 
 <template>
-    <NuxtLayout>
-        <AddTour />
+    <NuxtLayout v-slot="{ user }">
+        {{ user }}
     </NuxtLayout>
 </template>

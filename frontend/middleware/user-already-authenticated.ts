@@ -4,11 +4,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   var destination = "";
   await fetchUser()
     .then((user) => {
-      if (user?.role == "admin") {
-        destination = "/dashboard";
-      } else if (user.role == "user") {
-        destination = "/app";
-      }
+      if (to.path) {
+        destination = to.path;
+      } else destination = "/dashboard";
     })
     .catch((e) => {
       console.log("auth", e);
@@ -17,16 +15,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   if (destination) return navigateTo(destination);
 });
 
-export var fetchUser = () => {
+export var fetchUser = async () => {
   var profileEndpoint = useRuntimeConfig().public.profileEndpoint;
-  return $fetch<User>(profileEndpoint, {
-    credentials: "include",
-  });
-};
-
-export var logout = () => {
-  var endpoint = useRuntimeConfig().public.logoutEndpoint;
-  return $fetch<User>(endpoint, {
+  return await $fetch<User>(profileEndpoint, {
     credentials: "include",
   });
 };

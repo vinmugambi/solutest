@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTourRequest;
 use App\Models\Tour;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -18,6 +19,27 @@ class TourController extends Controller
         $tour = Tour::create($request->validated());
 
         return response()->json($tour, 201);
+    }
+
+    public function show($id)
+    {
+        $user = auth()->user();
+        $isAdmin = $user && $user->isAdmin(); // Adjust this based on your role logic
+
+        // Conditionally include bookings based on admin status
+        $tourQuery = Tour::with('destination');
+
+        if ($isAdmin) {
+            $tourQuery->with('bookings');
+        }
+
+        $tour = $tourQuery->find($id);
+
+        if (!$tour) {
+            return response()->json(['error' => 'Tour not found'], 404);
+        }
+
+        return response()->json($tour, 200);
     }
 
     public function index(Request $request)

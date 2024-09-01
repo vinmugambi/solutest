@@ -9,17 +9,20 @@
         </div>
         <div>
             <div class="flex p-3 justify-between">
-                <h2 class="text-3xl font-semibold">Tickets</h2>
-                <UInput v-model="q" placeholder="Filter tickets" />
-
-
+                <UInput v-if="query.filterable" v-model="q" placeholder="Filter tickets" />
             </div>
 
-            <UTable :columns="columns" :rows="rows" :loading="status == 'pending'" />
+            <UTable :columns="columns" :rows="rows" :loading="status == 'pending'">
+                <template #booking-data="{ row }">
+                    <NuxtLink class="text-primary font-medium hover:underline" :to="`/bookings/${row.booking}`">
+                        view booking
+                    </NuxtLink>
+                </template>
+            </UTable>
 
             <div class="flex justify-between p-3">
 
-                <UPagination v-if="filteredRows?.length" v-model="page" :page-count="pageCount"
+                <UPagination v-if="query.pageable && filteredRows?.length" v-model="page" :page-count="pageCount"
                     :total="filteredRows?.length || 0" />
             </div>
         </div>
@@ -28,16 +31,17 @@
 
 <script setup lang="ts">
 import type { Ticket } from '~/types';
-var event = useRequestEvent()
 
 const query = defineProps({
     limit: Number,
     order_by: String,
     page_size: Number,
+    pageable: Boolean,
+    filterable: Boolean
 })
 
 var endpoint = useRuntimeConfig().public.ticketsEndpoint
-
+const headers = useRequestHeaders(['cookie'])
 
 const {
     data,
@@ -45,7 +49,7 @@ const {
     status,
 } = await useFetch<Ticket[]>(endpoint, {
     credentials: "include",
-    query, server: false
+    query, headers
 
 })
 
@@ -67,8 +71,6 @@ const columns = [
     },
     {
         key: 'booking',
-        label: 'Booking',
-        sortable: true
     }]
 
 const q = ref('')

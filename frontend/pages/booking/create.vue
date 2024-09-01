@@ -1,3 +1,0 @@
-<template>
-    book atour
-</template>

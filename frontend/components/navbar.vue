@@ -1,26 +1,32 @@
 <template>
     <div class="flex py-2 justify-between px-4 border-b">
-        <NuxtLink :to="homeLink">
-            <Logo />
-        </NuxtLink>
-        <UButton @click="logout" variant="link">logout</UButton>
+        <template v-if="role">
+            <UButton :to="homeLink" :prefetch="false" variant="link">Home</UButton>
+            <UButton @click="logout" variant="link">logout</UButton>
+        </template>
+        <template v-else>
+            <NuxtLink :to="homeLink">
+                <Logo />
+            </NuxtLink>
+            <UButton to="/auth?action=login" color="primary">Login</UButton>
+        </template>
     </div>
-    {{ user }}
-
 </template>
 
 
-<script setup>
-import { useAuth } from '~/hooks/useAuth';
+<script setup lang="ts">
 
 
-var { user, checkAuthorization, logout } = useAuth()
-
-await callOnce(async () => {
-    var user = user ?? await checkAuthorization()
-    console.log(user, "navbar")
+var props = defineProps({
+    role: String,
 })
+var emit = defineEmits(["logout"])
 
-var homeLink = computed(() => user?.role == 'admin' ? '/dashboard'
-    : user?.role == 'user' ? '/app' : "/")
+function logout() {
+    emit("logout")
+}
+
+
+
+var homeLink = computed(() => props?.role ? '/dashboard' : "/")
 </script>

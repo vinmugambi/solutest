@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('tours/{tour}/bookings', [BookingController::class, 'store'])->name('book.tour');
-    // Route::post('bookings/{booking}/tickets', [TicketController::class, 'store'])->name('ticket.booking');
 });
 
 Route::get('/tours', [TourController::class, 'index'])->middleware("guest");
+Route::get('/tours/{id}', [TourController::class, 'show'])->middleware("guest");
