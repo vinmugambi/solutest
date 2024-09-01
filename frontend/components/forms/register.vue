@@ -18,7 +18,7 @@
                 <UInput v-model="registerForm.password" type="password" />
             </UFormGroup>
 
-            <UButton type="submit" color="black" class="mb-3">
+            <UButton type="submit" class="mb-3">
                 Register
             </UButton>
 

@@ -1,36 +1,53 @@
 <!-- components/CreateDestinationForm.vue -->
 <template>
-    <UForm :schema="createDestinationSchema" :state="createDestinationForm" class="space-y-4" @submit="onSubmit">
-        <div class="mt-8">
-            <p class="pb-4 text-xl font-serif font-semibold leading-6 text-gray-900 dark:text-white">
-                New destination
-            </p>
+    <div>
 
-            <UFormGroup label="Name" name="name" class="mb-3">
-                <UInput v-model="createDestinationForm.name" placeholder="Enter destination name" />
-            </UFormGroup>
+        <UButton color="gray" label="new destination" @click="isOpen = true" />
 
-            <UFormGroup label="Description" name="description" class="mb-6">
-                <UInput v-model="createDestinationForm.description" placeholder="Enter destination description" />
-            </UFormGroup>
+        <UModal v-model="isOpen" prevent-close>
 
-            <UButton type="submit" color="black" class="mb-3">
-                Create Destination
-            </UButton>
 
-            <div class="text-sm">
-                <div v-if="status === 'error'" class="text-red-500 mt-2">
-                    {{ errorMessage }}
+            <UForm :schema="createDestinationSchema" :state="createDestinationForm" class="space-y-4 p-6"
+                @submit="onSubmit">
+                <div class="">
+                    <p class="pb-4 text-xl font-serif font-semibold leading-6 text-gray-900 dark:text-white">
+                        New destination
+                    </p>
+
+                    <UFormGroup label="Name" name="name" class="mb-3">
+                        <UInput v-model="createDestinationForm.name" placeholder="Enter destination name" />
+                    </UFormGroup>
+
+                    <UFormGroup label="Description" name="description" class="mb-6">
+                        <UInput v-model="createDestinationForm.description"
+                            placeholder="Enter destination description" />
+                    </UFormGroup>
+
+                    <div class="flex gap-4">
+                        <UButton type="submit">
+                            Create Destination
+                        </UButton>
+                        <UButton color="gray" @click="isOpen = false">Cancel</UButton>
+
+                    </div>
+
+
+
+                    <div class="text-sm">
+                        <div v-if="status === 'error'" class="text-red-500 mt-2">
+                            {{ errorMessage }}
+                        </div>
+
+                        <div v-if="validationErrors.length" class="text-red-500 mt-2">
+                            <ul>
+                                <li v-for="error in validationErrors" :key="error">{{ error }}</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-
-                <div v-if="validationErrors.length" class="text-red-500 mt-2">
-                    <ul>
-                        <li v-for="error in validationErrors" :key="error">{{ error }}</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </UForm>
+            </UForm>
+        </UModal>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -42,6 +59,7 @@ import { useFormSubmit } from '~/hooks/useFormSubmit';
 
 const emit = defineEmits(['destinationCreated']);
 
+var isOpen = ref(false)
 const createDestinationSchema = object({
     name: string().max(255, "Name is too long").required('Name is required'),
     description: string().required('Description is required'),

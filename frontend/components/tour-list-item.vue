@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :to="`/tour/${tour.id}`" class="rounded-xl hover:bg-gray-200">
+    <NuxtLink v-if="tour" :to="`/tours/${tour.id}`" class="rounded-xl hover:bg-gray-200">
         <div class="flex gap-4 max-w-lg py-6">
 
             <div class="flex-1 flex flex-col space-y-2">
@@ -24,14 +24,13 @@
 
                     </div>
 
-                    <UButton color="primary" variant="link">Book
+                    <UButton v-if="!hideActions" color="primary" :to="`/tours/${tour.id}/book`" variant="link">Book
                         <template #trailing>
                             <UIcon name="i-heroicons-arrow-right-20-solid" class="w-5 h-5" />
                         </template>
                     </UButton>
                 </div>
             </div>
-            <!-- <NuxtImg v-if="tour.image" class="w-1/4 h-full rounded-xl object-cover" :src="tour.image"></NuxtImg> -->
 
         </div>
     </NuxtLink>
@@ -42,7 +41,8 @@ import { format } from 'date-fns';
 import type { Tour } from '~/types';
 
 const props = defineProps<{
-    tour: Tour
+    tour: Tour | null,
+    hideActions?: Boolean
 }>()
 
 

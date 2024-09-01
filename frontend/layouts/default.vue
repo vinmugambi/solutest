@@ -10,7 +10,7 @@
                 <UButton to="/auth">Login</UButton>
             </div>
         </div>
-        <main v-else class="flex flex-col gap-8 py-8 px-4">
+        <main v-else class="relative max-w-3xl mx-auto py-8">
             <slot :user="data" />
         </main>
     </div>

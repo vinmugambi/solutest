@@ -1,14 +1,17 @@
 <template>
-    <div class="flex py-2 justify-between px-4 border-b">
+    <div class="flex py-2 justify-between px-4 max-w-3xl mx-auto border-b">
         <template v-if="role">
             <UButton :to="homeLink" :prefetch="false" variant="link">Home</UButton>
             <UButton @click="logout" variant="link">logout</UButton>
         </template>
         <template v-else>
-            <NuxtLink :to="homeLink">
+            <a href="/">
                 <Logo />
-            </NuxtLink>
-            <UButton to="/auth?action=login" color="primary">Login</UButton>
+            </a>
+            <UButton to="/auth?action=login">
+                login
+            </UButton>
+
         </template>
     </div>
 </template>

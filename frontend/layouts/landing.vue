@@ -3,8 +3,8 @@
         <header>
             <Navbar :role="user?.role" @logout="logout" />
         </header>
-        <main class="relative max-w-lg mx-auto pb-24 px-4">
-            <slot />
+        <main class="relative max-w-lg mx-auto pb-16 px-4">
+            <slot :user="user" />
         </main>
     </div>
 </template>

@@ -2,13 +2,21 @@
 <template>
     <UForm :schema="createTourSchema" :state="createTourForm" class="space-y-4" @submit="onSubmit">
         <div class="mt-8">
-            <p class="pb-4 text-xl font-serif font-semibold leading-6 text-gray-900 dark:text-white">
+            <p class="pb-8 text-xl font-serif font-semibold leading-6 text-gray-900 dark:text-white">
                 New Tour
             </p>
 
-            <UFormGroup label="Destination ID" name="destination_id" class="mb-3">
-                <UInput v-model="createTourForm.destination_id" placeholder="Enter destination ID" type="number" />
-            </UFormGroup>
+            <div class="flex gap-2 items-end mb-3">
+
+                <UFormGroup label="Destination" name="destination_id" class="flex-1">
+                    <USelect v-model="createTourForm.destination_id" option-attribute="name"
+                        :options="[{ name: 'Nairobi', value: 1 }]" />
+                </UFormGroup>
+
+                <FormsAddDestination />
+
+            </div>
+
 
             <UFormGroup label="Name" name="name" class="mb-3">
                 <UInput v-model="createTourForm.name" placeholder="Enter tour name" />
@@ -16,15 +24,6 @@
 
             <UFormGroup label="Description" name="description" class="mb-3">
                 <UInput v-model="createTourForm.description" placeholder="Enter tour description" />
-            </UFormGroup>
-
-            <UFormGroup label="Destination Name" name="destination_name" class="mb-3">
-                <UInput v-model="createTourForm.destination_name" placeholder="Enter destination name (optional)" />
-            </UFormGroup>
-
-            <UFormGroup label="Destination Description" name="destination_description" class="mb-3">
-                <UInput v-model="createTourForm.destination_description"
-                    placeholder="Enter destination description (optional)" />
             </UFormGroup>
 
             <UFormGroup label="Price" name="price" class="mb-3">
@@ -39,7 +38,7 @@
                 <UInput v-model="createTourForm.start_time" placeholder="Enter start time" type="datetime-local" />
             </UFormGroup>
 
-            <UButton type="submit" color="black" class="mb-3">
+            <UButton type="submit" class="my-8">
                 Create Tour
             </UButton>
 
@@ -62,7 +61,7 @@
 import { useRuntimeConfig } from '#imports';
 import type { FormSubmitEvent } from '#ui/types';
 import { defineEmits, reactive, watch } from 'vue';
-import { date, number, object, string, type InferType } from 'yup';
+import { number, object, string, type InferType } from 'yup';
 import { useFormSubmit } from '~/hooks/useFormSubmit';
 
 const emit = defineEmits(['tourCreated']);
@@ -75,8 +74,9 @@ const createTourSchema = object({
     destination_description: string().nullable(),
     price: number().required('Price is required'),
     slots: number().integer().required('Slots are required'),
-    start_time: date().min(new Date(), 'Start time must be in the future').required('Required')
 });
+
+const date = ref(new Date())
 
 type CreateTourSchema = InferType<typeof createTourSchema>;
 

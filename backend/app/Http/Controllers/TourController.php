@@ -23,6 +23,7 @@ class TourController extends Controller
 
     public function show($id)
     {
+        // Ensure the user is authenticated
         $user = auth()->user();
         $isAdmin = $user && $user->isAdmin(); // Adjust this based on your role logic
 
@@ -38,6 +39,16 @@ class TourController extends Controller
         if (!$tour) {
             return response()->json(['error' => 'Tour not found'], 404);
         }
+
+        // Check if the user has already booked the tour
+        $hasBooked = false;
+        if ($user) {
+            $hasBooked = $user->bookings()->where('tour_id', $id)->exists();
+        }
+
+        // Add the 'has_booked' attribute to the tour
+        $tourData = $tour->toArray();
+        $tourData['has_booked'] = $hasBooked;
 
         return response()->json($tour, 200);
     }

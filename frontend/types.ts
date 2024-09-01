@@ -11,6 +11,8 @@ export interface Tour {
   image: string;
   capacity: number;
   destination: Destination;
+  bookings?: Booking[];
+  has_booked?: Boolean;
 }
 
 export interface Destination {

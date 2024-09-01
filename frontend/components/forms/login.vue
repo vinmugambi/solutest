@@ -14,7 +14,7 @@
                 <UInput v-model="loginForm.password" type="password" />
             </UFormGroup>
 
-            <UButton type="submit" class="mb-4" color="black">
+            <UButton type="submit" class="mb-4">
                 Login
             </UButton>
 
