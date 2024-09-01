@@ -1,12 +1,3 @@
-<script setup lang="ts">
-import type { Tour } from '~/types';
-
-var endpoint = useRuntimeConfig().public.toursEndpoint
-const { status, data: tours } = useFetch<Tour[]>(endpoint, {
-    lazy: true
-})
-</script>
-
 <template>
     <NuxtLayout name="landing">
         <div class="text-center py-8">
@@ -17,13 +8,6 @@ const { status, data: tours } = useFetch<Tour[]>(endpoint, {
                 Travel, meet people, try something new
             </p>
         </div>
-        <div v-if="status === 'pending'">
-            Loading ...
-        </div>
-        <div v-else class="">
-            <div v-for="tour in tours">
-                <TourListItem :tour="tour" />
-            </div>
-        </div>
+        <TourList />
     </NuxtLayout>
 </template>

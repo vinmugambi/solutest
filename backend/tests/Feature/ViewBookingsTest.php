@@ -5,13 +5,14 @@ namespace Tests\Feature;
 use App\Models\Booking;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ViewBookingsTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function admin_can_view_all_bookings()
     {
         /** @var \App\Models\User $admin */
@@ -24,6 +25,7 @@ class ViewBookingsTest extends TestCase
             ->assertJsonCount(5);
     }
 
+    #[Test]
     public function users_can_only_view_their_own_bookings()
     {
 
@@ -35,7 +37,7 @@ class ViewBookingsTest extends TestCase
 
 
         $this->actingAs($user)
-            ->get('/bookings')
+            ->get(route('bookings.me'))
             ->assertStatus(200)
             ->assertJsonCount(1);
     }

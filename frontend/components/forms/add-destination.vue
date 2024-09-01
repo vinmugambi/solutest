@@ -72,21 +72,25 @@ const createDestinationForm = reactive<CreateDestinationSchema>({
     description: '',
 });
 
-const createDestinationEndpoint = useRuntimeConfig().public.toursEndpoint;
+const endpoint = useRuntimeConfig().public.destinationsEndpoint
 
 const {
-    errorMessage: errorMessage,
-    status: status,
-    submitForm: submitCreateDestinationForm,
-    validationErrors: validationErrors,
-} = useFormSubmit(createDestinationEndpoint);
+    errorMessage,
+    status,
+    submitForm,
+    validationErrors,
+} = useFormSubmit(endpoint);
 
 async function onSubmit(event: FormSubmitEvent<CreateDestinationSchema>) {
-    await submitCreateDestinationForm(event.data);
+    await submitForm(event.data);
 }
+
+const toast = useToast()
 
 watch(status, (newStatus) => {
     if (newStatus === 'success') {
+        isOpen.value = false;
+        toast.add({ title: "Destination has been created" })
         emit('destinationCreated');
     }
 });

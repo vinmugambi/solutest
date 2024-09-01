@@ -5,13 +5,14 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\Tour;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class BookTourTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function it_creates_a_booking_for_a_valid_tour_with_available_slots()
     {
         /** @var \App\Models\User $user */
@@ -33,7 +34,7 @@ class BookTourTest extends TestCase
         $this->assertEquals(9, $tour->fresh()->slots);
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_400_if_no_slots_are_available()
     {
         /** @var \App\Models\User $user */
@@ -53,7 +54,7 @@ class BookTourTest extends TestCase
         $this->assertEquals(0, $tour->fresh()->slots);
     }
 
-    /** @test */
+    #[Test]
     public function it_requires_authentication_to_create_a_booking()
     {
         $tour = Tour::factory()->create(['slots' => 10]);

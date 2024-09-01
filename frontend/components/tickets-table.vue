@@ -48,8 +48,8 @@ const {
     error,
     status,
 } = await useFetch<Ticket[]>(endpoint, {
-    credentials: "include",
-    query, headers
+
+    query, headers, credentials: "include"
 
 })
 

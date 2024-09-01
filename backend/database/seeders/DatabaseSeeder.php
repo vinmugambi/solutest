@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Booking;
+use App\Models\Destination;
 use App\Models\Ticket;
 use App\Models\Tour;
 use App\Models\User;
@@ -35,7 +36,10 @@ class DatabaseSeeder extends Seeder
 
 
         Booking::factory()->count(5)->create();
-        Booking::factory()->create(["user_id" => $user->id]);
-        Ticket::factory()->count(5)->create();
+
+        $booking = Booking::factory()->create(["user_id" => $user->id]);
+
+        Ticket::factory()->count(3)->create(["booking_id" => $booking->id]);
+        Destination::factory(5)->create();
     }
 }

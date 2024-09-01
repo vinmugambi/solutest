@@ -62,7 +62,7 @@ const {
     error,
     status,
 } = await useFetch<Tour[]>(endpoint, {
-    credentials: "include",
+
     query,
     headers,
 })

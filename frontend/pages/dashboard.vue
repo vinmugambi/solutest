@@ -12,10 +12,7 @@
                     </div>
 
                 </div>
-                <ToursTable :limit="20" :page_size="3">
-
-
-                </ToursTable>
+                <ToursTable :limit="20" :page_size="3" />
             </div>
             <div class="border-t border-dashed pt-4">
 
@@ -23,7 +20,7 @@
                     <h2 class="text-4xl font-bold">Bookings</h2>
                     <div class="flex gap-2 items-end">
                         <UButton color="gray" to="/bookings"> view all </UButton>
-                        <UButton color="gray" to="/bookings"> search ticket </UButton>
+                        <UButton color="gray" to="/tickets"> search ticket </UButton>
                     </div>
 
                 </div>
@@ -32,11 +29,15 @@
         </div>
         <div v-if="user?.role == 'user'">
             <div>
-                <h2>Your bookings</h2>
+                <h2 class="text-4xl pb-4 px-4">My bookings</h2>
+                <MyBookings />
             </div>
+
+            <div class="mt-8">
+                <h2 class="text-4xl pb-4 px-4">Discover</h2>
+                <TourList />
+            </div>
+
         </div>
     </NuxtLayout>
 </template>
-<script setup lang="ts">
-
-</script>

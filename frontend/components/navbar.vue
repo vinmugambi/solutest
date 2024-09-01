@@ -1,8 +1,8 @@
 <template>
-    <div class="flex py-2 justify-between px-4 max-w-3xl mx-auto border-b">
+    <div class="flex py-2 justify-between px-2 max-w-3xl mx-auto border-b">
         <template v-if="role">
-            <UButton :to="homeLink" :prefetch="false" variant="link">Home</UButton>
-            <UButton @click="logout" variant="link">logout</UButton>
+            <UButton :to="homeLink" :prefetch="false" variant="soft">Home</UButton>
+            <UButton @click="logout" variant="soft">logout</UButton>
         </template>
         <template v-else>
             <a href="/">

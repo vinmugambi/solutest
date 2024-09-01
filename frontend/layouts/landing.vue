@@ -1,10 +1,10 @@
 <template>
     <div>
         <header>
-            <Navbar :role="user?.role" @logout="logout" />
+            <Navbar :role="data?.role" @logout="logout" />
         </header>
         <main class="relative max-w-lg mx-auto pb-16 px-4">
-            <slot :user="user" />
+            <slot :user="data" />
         </main>
     </div>
 </template>
@@ -16,21 +16,20 @@ var endpoint = useRuntimeConfig().public.profileEndpoint
 var logoutEndpoint = useRuntimeConfig().public.logoutEndpoint
 
 var router = useRouter()
-var user = computed(() => data.value ? data.value : null)
+const headers = useRequestHeaders(['cookie'])
 
 const {
     data,
-    status
 } = await useFetch<User>(endpoint, {
-    credentials: "include",
-    server: false
+    headers,
+    credentials: "include"
 }).catch()
 
 
 function logout() {
     $fetch(logoutEndpoint, {
-        credentials: "include",
         method: "POST",
+        headers
     })
         .then(() => {
             router.push("/auth?action=login");

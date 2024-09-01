@@ -5,13 +5,14 @@ namespace Tests\Feature;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ViewTicketsTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function admins_can_view_all_tickets()
     {
         /** @var \App\Models\User $admin */
@@ -22,16 +23,5 @@ class ViewTicketsTest extends TestCase
             ->get('/tickets')
             ->assertStatus(200)
             ->assertJsonCount(5);
-    }
-
-    public function non_admins_can_only_view_their_own_tickets()
-    {
-        /** @var \App\Models\User $user*/
-        $user = User::factory()->create(['role' => 'user']);
-        Ticket::factory()->count(5)->create();
-
-        $this->actingAs($user)
-            ->get('/tickets')
-            ->assertStatus(403);
     }
 }

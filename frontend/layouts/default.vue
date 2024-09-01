@@ -10,7 +10,7 @@
                 <UButton to="/auth">Login</UButton>
             </div>
         </div>
-        <main v-else class="relative max-w-3xl mx-auto py-8">
+        <main v-else class="relative max-w-3xl mx-auto py-8 px-4">
             <slot :user="data" />
         </main>
     </div>
@@ -23,22 +23,24 @@ import type { User } from '~/types';
 var endpoint = useRuntimeConfig().public.profileEndpoint
 var logoutEndpoint = useRuntimeConfig().public.logoutEndpoint
 
-var router = useRouter()
-
 const headers = useRequestHeaders(['cookie'])
+var router = useRouter()
 
 const {
     data,
     status
-} = await useAsyncData<User>(() => $fetch(endpoint, {
-    credentials: "include",
-    headers: headers
-}))
+} = await useFetch<User>(endpoint, {
+    headers,
+    credentials: "include"
+}).catch()
+
+console.log(data.value, headers)
+
 
 function logout() {
     $fetch(logoutEndpoint, {
-        credentials: "include",
         method: "POST",
+        credentials: "include"
     })
         .then(() => {
             router.push("/auth?action=login");
@@ -47,7 +49,6 @@ function logout() {
             console.error(e);
         });
 }
-
 
 </script>
 

@@ -49,9 +49,9 @@ const {
     error,
     status,
 } = await useFetch<Booking[]>(endpoint, {
-    credentials: "include",
     query,
     headers,
+    credentials: "include"
 })
 
 var items = data?.value?.map(item => ({

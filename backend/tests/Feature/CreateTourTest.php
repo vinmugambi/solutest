@@ -7,13 +7,14 @@ use App\Models\Tour;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class CreateTourTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function admins_can_create_tours()
     {
         /** @var \App\Models\User $admin */
@@ -36,6 +37,7 @@ class CreateTourTest extends TestCase
         $this->assertDatabaseHas('tours', ['name' => 'Amazing Safari']);
     }
 
+    #[Test]
     public function non_admin_user_cannot_create_tours()
     {
         /** @var \App\Models\User $user */

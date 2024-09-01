@@ -9,6 +9,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       toursEndpoint: apiBase + "/api/tours",
+      destinationsEndpoint: apiBase + "/api/destinations",
       bookingsEndpoint: apiBase + "/bookings",
       ticketsEndpoint: apiBase + "/tickets",
       loginEndpoint: apiBase + "/login",

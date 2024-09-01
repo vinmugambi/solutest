@@ -2,18 +2,18 @@
 <template>
     <UForm :schema="createTourSchema" :state="createTourForm" class="space-y-4" @submit="onSubmit">
         <div class="mt-8">
-            <p class="pb-8 text-xl font-serif font-semibold leading-6 text-gray-900 dark:text-white">
+            <p class="pb-8 text-4xl font-serif font-semibold leading-6 text-gray-900 dark:text-white">
                 New Tour
             </p>
 
             <div class="flex gap-2 items-end mb-3">
 
                 <UFormGroup label="Destination" name="destination_id" class="flex-1">
-                    <USelect v-model="createTourForm.destination_id" option-attribute="name"
-                        :options="[{ name: 'Nairobi', value: 1 }]" />
+                    <USelect v-model="createTourForm.destination_id" option-attribute="name" value-attribute="id"
+                        :options="props.destinations ?? []" />
                 </UFormGroup>
 
-                <FormsAddDestination />
+                <!-- <FormsAddDestination /> -->
 
             </div>
 
@@ -61,22 +61,26 @@
 import { useRuntimeConfig } from '#imports';
 import type { FormSubmitEvent } from '#ui/types';
 import { defineEmits, reactive, watch } from 'vue';
-import { number, object, string, type InferType } from 'yup';
+import { date, number, object, string, type InferType } from 'yup';
 import { useFormSubmit } from '~/hooks/useFormSubmit';
+import type { Destination } from '~/types';
 
 const emit = defineEmits(['tourCreated']);
+const props = defineProps<{
+    destinations: Destination[] | null
+}>()
+const router = useRouter();
+const toast = useToast();
 
 const createTourSchema = object({
     destination_id: number().required('Destination ID is required'),
     name: string().max(255, "Name is too long").required('Required'),
     description: string().required('Required'),
-    destination_name: string().nullable(),
-    destination_description: string().nullable(),
     price: number().required('Price is required'),
     slots: number().integer().required('Slots are required'),
+    start_time: date().min(new Date(), 'Start time must be in the future').required('Required')
 });
 
-const date = ref(new Date())
 
 type CreateTourSchema = InferType<typeof createTourSchema>;
 
@@ -84,29 +88,28 @@ const createTourForm = reactive({
     destination_id: '',
     name: '',
     description: '',
-    destination_name: '',
-    destination_description: '',
     price: '',
     slots: '',
     start_time: ''
 });
 
-const createTourEndpoint = useRuntimeConfig().public.toursEndpoint;
-const event = useRequestEvent();
+const endpoint = useRuntimeConfig().public.toursEndpoint;
 
 const {
-    errorMessage: errorMessage,
-    status: status,
-    submitForm: submitCreateTourForm,
-    validationErrors: validationErrors,
-} = useFormSubmit(createTourEndpoint);
+    errorMessage,
+    status,
+    submitForm,
+    validationErrors,
+} = useFormSubmit(endpoint);
 
 async function onSubmit(event: FormSubmitEvent<CreateTourSchema>) {
-    await submitCreateTourForm(event.data);
+    await submitForm(event.data);
 }
 
 watch(status, (newStatus) => {
     if (newStatus === 'success') {
+        router.push("/dashboard")
+        toast.add({ title: "Tour has been saved" })
         emit('tourCreated');
     }
 });

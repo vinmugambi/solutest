@@ -1,6 +1,6 @@
 <template>
-    <NuxtLink v-if="tour" :to="`/tours/${tour.id}`" class="rounded-xl hover:bg-gray-200">
-        <div class="flex gap-4 max-w-lg py-6">
+    <NuxtLink v-if="tour?.id" :to="`/tours/${tour.id}`" class="">
+        <div class="flex gap-4 max-w-lg py-4 rounded-xl hover:text-gray-900 hover:bg-gray-100 px-3">
 
             <div class="flex-1 flex flex-col space-y-2">
                 <div class="flex items-center justify-between">
@@ -24,7 +24,7 @@
 
                     </div>
 
-                    <UButton v-if="!hideActions" color="primary" :to="`/tours/${tour.id}/book`" variant="link">Book
+                    <UButton v-if="!hideActions" :to="`/tours/${tour.id}/book`" variant="soft">Book
                         <template #trailing>
                             <UIcon name="i-heroicons-arrow-right-20-solid" class="w-5 h-5" />
                         </template>

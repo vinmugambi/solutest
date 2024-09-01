@@ -9,12 +9,8 @@ const headers = useRequestHeaders(['cookie'])
 const tourId = route.params.id
 var url = endpoint + `/${tourId}`
 
-// var { data: tour } = useAsyncData<Tour>(url, () => $fetch(url, {
-//     credentials: "include",
-//     headers,
-//     lazy: true,
-// }))
-const { status, data: tour } = useFetch<Tour>(url, {
+
+const { data: tour } = useFetch<Tour>(url, {
     headers
 })
 const number_of_tickets = ref("1");
@@ -29,9 +25,12 @@ const amount = computed(() => {
 <template>
     <NuxtLayout v-slot="{ user }">
         <h1 class="text-4xl mb-4 font-semibold">Book tour</h1>
-        <TourListItem :tour="tour" :hide-actions="true" />
+        <div class="border inline-flex rounded-xl">
 
-        <div class="py-4 flex gap-2 items-center">
+            <TourListItem :tour="tour" :hide-actions="true" />
+        </div>
+
+        <div class="py-8 flex gap-2 items-center">
             <p class="font-semibold">Number of tickets</p>
             <UInput class="w-36" type="number" v-model="number_of_tickets" />
         </div>
