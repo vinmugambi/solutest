@@ -14,9 +14,10 @@
     "date-fns": "^3.6.0",
     "nuxt": "^3.13.0",
     "vue": "latest",
-    "yup": "^1.4.0"
+    "yup": "^1.4.0",
+    "@nuxt/ui": "npm:@nuxt/ui-edge@latest"
   },
   "devDependencies": {
-    "@nuxt/ui": "npm:@nuxt/ui-edge@latest"
+    "@flydotio/dockerfile": "^0.5.8"
   }
 }

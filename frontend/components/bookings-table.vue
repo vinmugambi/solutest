@@ -37,6 +37,7 @@
 </template>
 
 <script setup lang="ts">
+import { useApiRoutes } from '~/composables/useApiRoutes';
 import type { Booking } from '~/types';
 
 const query = defineProps({
@@ -47,7 +48,7 @@ const query = defineProps({
     pageable: Boolean
 })
 
-var endpoint = useRuntimeConfig().public.bookingsEndpoint
+var endpoint = useApiRoutes().bookingsEndpoint
 const headers = useRequestHeaders(['cookie'])
 
 const {

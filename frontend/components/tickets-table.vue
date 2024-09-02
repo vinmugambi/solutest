@@ -27,6 +27,7 @@
 </template>
 
 <script setup lang="ts">
+import { useApiRoutes } from '~/composables/useApiRoutes';
 import type { Ticket } from '~/types';
 
 const query = defineProps({
@@ -37,7 +38,7 @@ const query = defineProps({
     filterable: Boolean
 })
 
-var endpoint = useRuntimeConfig().public.ticketsEndpoint
+var endpoint = useApiRoutes().ticketsEndpoint
 const headers = useRequestHeaders(['cookie'])
 
 const {

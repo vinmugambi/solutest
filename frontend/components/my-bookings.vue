@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { useApiRoutes } from '~/composables/useApiRoutes';
 import type { Booking, User } from '~/types';
 import BookingItem from './booking-item.vue';
 
-var endpoint = useRuntimeConfig().public.bookingsEndpoint
+var endpoint = useApiRoutes().bookingsEndpoint
 const headers = useRequestHeaders(['cookie'])
 
 defineProps<{ user: User | null }>()

@@ -17,46 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import type { User } from '~/types';
-
-var endpoint = useRuntimeConfig().public.profileEndpoint
-var logoutEndpoint = useRuntimeConfig().public.logoutEndpoint
-
-const headers = useRequestHeaders(['cookie'])
-var router = useRouter();
-var route = useRoute();
-var currentPath = route.fullPath;
-
-const {
-    data,
-    status,
-    error
-} = await useFetch<User>(endpoint, {
-    headers,
-    credentials: "include"
-}).catch()
-
-// should use middleware instead
-watch(status, (val) => {
-    console.log("authStatus", status, error)
-    if (val == 'error') {
-        router.push("/auth?action=login");
-    }
-})
-
-
-function logout() {
-    $fetch(logoutEndpoint, {
-        method: "POST",
-        credentials: "include"
-    })
-        .then(() => {
-            router.push("/auth?action=login");
-        })
-        .catch((e) => {
-            console.error(e);
-        });
-}
+const { data, status, error, logout, currentPath } = await useAuth();
 
 </script>
 

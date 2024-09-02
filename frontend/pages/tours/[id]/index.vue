@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { useApiRoutes } from '~/composables/useApiRoutes';
 import type { Tour } from '~/types';
 
 
-var endpoint = useRuntimeConfig().public.toursEndpoint
+var endpoint = useApiRoutes().toursEndpoint
 
 const route = useRoute()
 const headers = useRequestHeaders(['cookie'])

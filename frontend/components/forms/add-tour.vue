@@ -58,11 +58,11 @@
 </template>
 
 <script setup lang="ts">
-import { useRuntimeConfig } from '#imports';
 import type { FormSubmitEvent } from '#ui/types';
 import { defineEmits, reactive, watch } from 'vue';
 import { date, number, object, string, type InferType } from 'yup';
-import { useFormSubmit } from '~/hooks/useFormSubmit';
+import { useApiRoutes } from '~/composables/useApiRoutes';
+import { useFormSubmit } from '~/composables/useFormSubmit';
 import type { Destination } from '~/types';
 
 const emit = defineEmits(['tourCreated']);
@@ -93,7 +93,7 @@ const createTourForm = reactive({
     start_time: ''
 });
 
-const endpoint = useRuntimeConfig().public.toursEndpoint;
+const endpoint = useApiRoutes().toursEndpoint;
 
 const {
     errorMessage,

@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { useFormSubmit } from '~/hooks/useFormSubmit';
+import { useApiRoutes } from '~/composables/useApiRoutes';
+import { useFormSubmit } from '~/composables/useFormSubmit';
 import type { Booking, User } from '~/types';
 
 var props = defineProps<{ user: User | null, booking: Booking | null, paying?: boolean }>()
 
-var endpoint = useRuntimeConfig().public.bookingsEndpoint
+var endpoint = useApiRoutes().bookingsEndpoint
 
 var router = useRouter()
 

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { useFormSubmit } from '~/hooks/useFormSubmit';
+import { useApiRoutes } from '~/composables/useApiRoutes';
+import { useFormSubmit } from '~/composables/useFormSubmit';
 import { type Booking, type Tour } from '~/types';
 
 
-var endpoint = useRuntimeConfig().public.toursEndpoint
+var endpoint = useApiRoutes().toursEndpoint
 
 const route = useRoute()
 const router = useRouter()
@@ -68,7 +69,7 @@ watch(submitStatus, (newStatus) => {
         </div>
 
         <div class="flex gap-4 my-4">
-            <UButton :disabled="['pending', 'success'].includes(status)" @click="book">Confirm booking</UButton>
+            <UButton :disabled="['pending', 'success'].includes(submitStatus)" @click="book">Confirm booking</UButton>
 
             <div class="">
                 <span class="font-mono text-sm uppercase">ksh </span>

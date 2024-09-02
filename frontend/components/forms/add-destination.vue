@@ -51,11 +51,11 @@
 </template>
 
 <script setup lang="ts">
-import { useRuntimeConfig } from '#imports';
 import type { FormSubmitEvent } from '#ui/types';
 import { defineEmits, reactive, watch } from 'vue';
 import { object, string, type InferType } from 'yup';
-import { useFormSubmit } from '~/hooks/useFormSubmit';
+import { useApiRoutes } from '~/composables/useApiRoutes';
+import { useFormSubmit } from '~/composables/useFormSubmit';
 
 const emit = defineEmits(['destinationCreated']);
 
@@ -72,7 +72,7 @@ const createDestinationForm = reactive<CreateDestinationSchema>({
     description: '',
 });
 
-const endpoint = useRuntimeConfig().public.destinationsEndpoint
+const endpoint = useApiRoutes().destinationsEndpoint
 
 const {
     errorMessage,

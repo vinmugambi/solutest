@@ -38,11 +38,11 @@
 </template>
 
 <script setup lang="ts">
-import { useRuntimeConfig } from '#imports';
 import type { FormSubmitEvent } from '#ui/types';
 import { defineEmits, reactive, watch } from 'vue';
 import { object, string, type InferType } from 'yup';
-import { useFormSubmit } from '~/hooks/useFormSubmit';
+import { useApiRoutes } from '~/composables/useApiRoutes';
+import { useFormSubmit } from '~/composables/useFormSubmit';
 
 const emit = defineEmits(['registerSuccess']);
 
@@ -58,7 +58,7 @@ type RegisterSchema = InferType<typeof registerSchema>;
 
 const registerForm = reactive({ email: '', password: '', name: '' });
 
-const registerEndpoint = useRuntimeConfig().public.registerEndpoint;
+const registerEndpoint = useApiRoutes().registerEndpoint;
 
 const {
     errorMessage: errorMessage,

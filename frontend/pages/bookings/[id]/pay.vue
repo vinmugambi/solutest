@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { useApiRoutes } from '~/composables/useApiRoutes';
 import type { Booking } from '~/types';
 
 
-var endpoint = useRuntimeConfig().public.bookingsEndpoint
+var endpoint = useApiRoutes().bookingsEndpoint
 
 const route = useRoute()
 const headers = useRequestHeaders(['cookie'])

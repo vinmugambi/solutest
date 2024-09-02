@@ -10,34 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import type { User } from '~/types';
-
-var endpoint = useRuntimeConfig().public.profileEndpoint
-var logoutEndpoint = useRuntimeConfig().public.logoutEndpoint
-
-var router = useRouter()
-const headers = useRequestHeaders(['cookie'])
-
-const {
-    data,
-} = await useFetch<User>(endpoint, {
-    headers,
-    credentials: "include"
-}).catch()
-
-
-function logout() {
-    $fetch(logoutEndpoint, {
-        method: "POST",
-        headers
-    })
-        .then(() => {
-            router.push("/auth?action=login");
-        })
-        .catch((e) => {
-            console.error(e);
-        });
-}
+const { data, status, error, logout, currentPath } = await useAuth();
 
 
 </script>

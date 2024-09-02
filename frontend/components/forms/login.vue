@@ -34,11 +34,11 @@
 </template>
 
 <script setup lang="ts">
-import { useRuntimeConfig } from '#imports';
 import type { FormSubmitEvent } from '#ui/types';
 import { defineEmits, reactive, watch } from 'vue';
 import { object, string, type InferType } from 'yup';
-import { useFormSubmit } from '~/hooks/useFormSubmit';
+import { useApiRoutes } from '~/composables/useApiRoutes';
+import { useFormSubmit } from '~/composables/useFormSubmit';
 
 const emit = defineEmits(['loginSuccess']);
 
@@ -53,7 +53,7 @@ type LoginSchema = InferType<typeof loginSchema>;
 
 const loginForm = reactive({ email: '', password: '' });
 
-const loginEndpoint = useRuntimeConfig().public.loginEndpoint;
+const loginEndpoint = useApiRoutes().loginEndpoint;
 const event = useRequestEvent();
 
 const {

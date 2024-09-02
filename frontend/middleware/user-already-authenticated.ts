@@ -1,3 +1,4 @@
+import { useApiRoutes } from "~/composables/useApiRoutes";
 import type { User } from "~/types";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
@@ -16,7 +17,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 });
 
 export var fetchUser = async () => {
-  var profileEndpoint = useRuntimeConfig().public.profileEndpoint;
+  var profileEndpoint = useApiRoutes().profileEndpoint;
   const headers = useRequestHeaders(["cookie"]);
   return await $fetch<User>(profileEndpoint, {
     headers,
