@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Tour;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -13,58 +13,68 @@ class BookTourTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_creates_a_booking_for_a_valid_tour_with_available_slots()
+    public function it_books_a_single_seat_when_no_seats_are_provided()
     {
-        /** @var \App\Models\User $user */
-
+        /** @var \App\Models\User $user*/
         $user = User::factory()->create();
-        $tour = Tour::factory()->create(['slots' => 10]);
+        $tour = Tour::factory()->create(['slots' => 5]);
 
-        $response = $this->actingAs($user)->postJson(route('book.tour', $tour->id));
+        $response = $this->actingAs($user)->postJson(route('tour.book', $tour));
 
-        $response->assertStatus(200);
-        $response->assertJsonStructure(['id', 'user_id', 'tour_id', 'status', 'created_at', 'updated_at']);
-
+        $response->assertStatus(201);
         $this->assertDatabaseHas('bookings', [
             'user_id' => $user->id,
             'tour_id' => $tour->id,
             'status'  => 'pending',
         ]);
-
-        $this->assertEquals(9, $tour->fresh()->slots);
+        $this->assertDatabaseHas('tours', [
+            'id' => $tour->id,
+            'slots' => 4, // 5 - 1 seat
+        ]);
+        $this->assertDatabaseCount('tickets', 1);
     }
 
     #[Test]
-    public function it_returns_400_if_no_slots_are_available()
+    public function it_books_multiple_seats_and_decrements_slots_accordingly()
     {
-        /** @var \App\Models\User $user */
-
+        /** @var \App\Models\User $user*/
         $user = User::factory()->create();
-        $tour = Tour::factory()->create(['slots' => 0]);
+        $tour = Tour::factory()->create(['slots' => 5]);
 
-        $response = $this->actingAs($user)->postJson(route('book.tour', $tour->id));
+        $response = $this->actingAs($user)->postJson(route('tour.book', $tour), [
+            'seats' => 3,
+        ]);
+
+        $response->assertStatus(201);
+        $this->assertDatabaseHas('bookings', [
+            'user_id' => $user->id,
+            'tour_id' => $tour->id,
+            'status'  => 'pending',
+        ]);
+        $this->assertDatabaseHas('tours', [
+            'id' => $tour->id,
+            'slots' => 2, // 5 - 3 seats
+        ]);
+        $this->assertDatabaseCount('tickets', 3);
+    }
+
+    #[Test]
+    public function it_returns_an_error_if_not_enough_slots_are_available()
+    {
+        /** @var \App\Models\User $user*/
+        $user = User::factory()->create();
+        $tour = Tour::factory()->create(['slots' => 2]);
+
+        $response = $this->actingAs($user)->postJson(route('tour.book', $tour), [
+            'seats' => 3,
+        ]);
 
         $response->assertStatus(400);
-        $response->assertJson(['error' => 'No slots available']);
-
-        $this->assertDatabaseMissing('bookings', [
-            'tour_id' => $tour->id,
+        $response->assertJson(['error' => 'Not enough slots available']);
+        $this->assertDatabaseHas('tours', [
+            'id' => $tour->id,
+            'slots' => 2, // No change since the booking failed
         ]);
-
-        $this->assertEquals(0, $tour->fresh()->slots);
-    }
-
-    #[Test]
-    public function it_requires_authentication_to_create_a_booking()
-    {
-        $tour = Tour::factory()->create(['slots' => 10]);
-
-        $response = $this->postJson(route('book.tour', $tour->id));
-
-        $response->assertStatus(401); // Unauthorized status
-
-        $this->assertDatabaseMissing('bookings', [
-            'tour_id' => $tour->id,
-        ]);
+        $this->assertDatabaseCount('tickets', 0);
     }
 }

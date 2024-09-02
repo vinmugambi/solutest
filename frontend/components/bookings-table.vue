@@ -20,6 +20,12 @@
                         view
                     </NuxtLink>
                 </template>
+
+                <template #tour-data="{ row }">
+                    <NuxtLink class="text-primary hover:underline" :to="`/tours/${row.tourId}`">
+                        {{ row.tourName }}
+                    </NuxtLink>
+                </template>
             </UTable>
 
             <div class="flex justify-between p-3">
@@ -56,28 +62,25 @@ const {
 
 var items = data?.value?.map(item => ({
     id: item.id,
-    tour: item.tour.name,
+    tourName: item.tour.name,
+    tourId: item.tour.id,
     tickets: item.tickets?.length || 0,
     booker: item.user.name,
+    status: item.status
 }))
 
 const columns = [
-    {
-        key: 'id',
-        label: 'Reference',
-    },
-
     {
         key: 'tour',
         label: 'Tour',
     },
     {
+        key: 'status',
+        label: 'Status',
+    },
+    {
         key: 'booker',
         label: 'Booker',
-    }, {
-        key: 'tickets',
-        label: 'Tickets',
-        sortable: true,
     },
     {
         key: 'view'

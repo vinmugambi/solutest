@@ -1,8 +1,5 @@
 <template>
-
     <div class="">
-
-
         <div v-if="error">
             Something went wrong
             {{ error }}
@@ -56,7 +53,8 @@ const {
 var items = data?.value?.map(item => ({
     number: item.ticket_number,
     tour: item.id,
-    booking: item.booking_id
+    booking: item.booking_id,
+    status: item.booking?.status ?? "pending"
 }))
 
 const columns = [
@@ -64,10 +62,13 @@ const columns = [
         key: 'number',
         label: 'Number',
     },
-
     {
         key: 'tour',
         label: 'Tour',
+    },
+    {
+        key: "status",
+        label: "Status",
     },
     {
         key: 'booking',
@@ -93,7 +94,4 @@ const pageCount = query.page_size || 5;
 const rows = computed(() => {
     return filteredRows.value?.slice((page.value - 1) * pageCount, (page.value) * pageCount)
 })
-
-
-
 </script>

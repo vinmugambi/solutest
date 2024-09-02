@@ -25,7 +25,8 @@ const tabIndex = ref(route.query.action === "register" ? 1 : 0);
 
 
 function onLoginSuccess() {
-    router.push("/dashboard");
+    const redirectTo = route.query?.redirect as string ?? '/dashboard';
+    router.push(redirectTo);
 }
 
 function onRegisterSuccess() {

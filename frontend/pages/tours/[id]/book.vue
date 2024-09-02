@@ -1,10 +1,19 @@
 <script setup lang="ts">
-import { type Tour } from '~/types';
+import { useFormSubmit } from '~/hooks/useFormSubmit';
+import { type Booking, type Tour } from '~/types';
+
+definePageMeta({
+    middleware: [
+        "only-allow-authenticated"
+    ]
+})
 
 var endpoint = useRuntimeConfig().public.toursEndpoint
 
 const route = useRoute()
+const router = useRouter()
 const headers = useRequestHeaders(['cookie'])
+
 
 const tourId = route.params.id
 var url = endpoint + `/${tourId}`
@@ -13,11 +22,37 @@ var url = endpoint + `/${tourId}`
 const { data: tour } = useFetch<Tour>(url, {
     headers
 })
-const number_of_tickets = ref("1");
 
+
+const seats = ref("1");
 const amount = computed(() => {
-    const tickets = Number(number_of_tickets.value) || 1;
+    const tickets = toNumberOrOne(seats.value)
     return (tour?.value?.price ? tickets * tour.value.price : 0).toFixed(0);
+});
+
+
+function toNumberOrOne(val: any) {
+    var num = Number(val)
+    return isNaN(num) ? 1 : num;
+}
+
+const {
+    errorMessage,
+    status,
+    data,
+    submitForm,
+    validationErrors,
+} = useFormSubmit<Booking>(endpoint + `/${tourId}/book`);
+
+
+function book() {
+    submitForm({ seats: toNumberOrOne(seats.value) })
+}
+
+watch(status, (newStatus) => {
+    if (newStatus === 'success' && data.value?.id) {
+        router.push(`/bookings/${data.value.id}/pay`)
+    }
 });
 
 </script>
@@ -32,15 +67,28 @@ const amount = computed(() => {
 
         <div class="py-8 flex gap-2 items-center">
             <p class="font-semibold">Number of tickets</p>
-            <UInput class="w-36" type="number" v-model="number_of_tickets" />
+            <UInput class="w-36" type="number" v-model="seats" />
         </div>
 
-        <div class="flex gap-4 mt-4">
-            <UButton>Confirm booking</UButton>
+        <div class="flex gap-4 my-4">
+            <UButton :disabled="['pending', 'success'].includes(status)" @click="book">Confirm booking</UButton>
 
             <div class="">
                 <span class="font-mono text-sm uppercase">ksh </span>
                 <span class="text-3xl font-medium font-mono"> {{ amount }}</span>
+            </div>
+        </div>
+
+
+        <div class="text-sm">
+            <div v-if="status === 'error'" class="text-red-500 mt-2">
+                {{ errorMessage }}
+            </div>
+
+            <div v-if="validationErrors.length" class="text-red-500 mt-2">
+                <ul>
+                    <li v-for="error in validationErrors" :key="error">{{ error }}</li>
+                </ul>
             </div>
         </div>
     </NuxtLayout>

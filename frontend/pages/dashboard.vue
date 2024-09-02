@@ -30,7 +30,7 @@
         <div v-if="user?.role == 'user'">
             <div>
                 <h2 class="text-4xl pb-4 px-4">My bookings</h2>
-                <MyBookings />
+                <MyBookings :user="user" />
             </div>
 
             <div class="mt-8">

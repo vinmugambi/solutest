@@ -19,7 +19,7 @@ class TicketFactory extends Factory
     {
         return [
             'booking_id' => Booking::factory(),
-            'ticket_number' => $this->faker->unique()->numerify('TICKET-#####'),
+            'ticket_number' => $this->faker->unique()->numerify('TKT-#####'),
             'created_at' => now(),
             'updated_at' => now(),
         ];

@@ -44,6 +44,7 @@ export interface Booking {
   tickets: Ticket[];
   user: User;
   user_id: string;
+  status: "confirmed" | "pending" | "cancelled";
   tour: Tour;
 }
 
@@ -52,6 +53,7 @@ export interface Ticket {
   ticket_number: string;
   created_at: string;
   booking_id: string;
+  booking?: Booking;
 }
 
 export type ToursSearchQuery = {

@@ -7,7 +7,7 @@
         <div v-if="!data?.role && ['success', 'error'].includes(status)" class="flex flex-col items-center py-16">
             <h1 class="text-3xl font-semibold pb-4">Not authorized</h1>
             <div class="flex gap-2 justify-center">
-                <UButton to="/auth">Login</UButton>
+                <UButton :to="`/auth?action=login&redirect=${currentPath}`">Login</UButton>
             </div>
         </div>
         <main v-else class="relative max-w-3xl mx-auto py-8 px-4">
@@ -19,12 +19,13 @@
 <script setup lang="ts">
 import type { User } from '~/types';
 
-
 var endpoint = useRuntimeConfig().public.profileEndpoint
 var logoutEndpoint = useRuntimeConfig().public.logoutEndpoint
 
 const headers = useRequestHeaders(['cookie'])
-var router = useRouter()
+var router = useRouter();
+var route = useRoute();
+var currentPath = route.fullPath;
 
 const {
     data,
