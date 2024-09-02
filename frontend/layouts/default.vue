@@ -29,13 +29,20 @@ var currentPath = route.fullPath;
 
 const {
     data,
-    status
+    status,
+    error
 } = await useFetch<User>(endpoint, {
     headers,
     credentials: "include"
 }).catch()
 
-console.log(data.value, headers)
+// should use middleware instead
+watch(status, (val) => {
+    console.log("authStatus", status, error)
+    if (val == 'error') {
+        router.push("/auth?action=login");
+    }
+})
 
 
 function logout() {

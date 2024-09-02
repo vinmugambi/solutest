@@ -2,11 +2,6 @@
 import { useFormSubmit } from '~/hooks/useFormSubmit';
 import { type Booking, type Tour } from '~/types';
 
-definePageMeta({
-    middleware: [
-        "only-allow-authenticated"
-    ]
-})
 
 var endpoint = useRuntimeConfig().public.toursEndpoint
 
