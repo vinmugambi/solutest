@@ -19,7 +19,7 @@ const tourId = route.params.id
 var url = endpoint + `/${tourId}`
 
 
-const { data: tour } = useFetch<Tour>(url, {
+const { data: tour, status } = useFetch<Tour>(url, {
     headers
 })
 
@@ -38,7 +38,7 @@ function toNumberOrOne(val: any) {
 
 const {
     errorMessage,
-    status,
+    status: submitStatus,
     data,
     submitForm,
     validationErrors,
@@ -49,7 +49,7 @@ function book() {
     submitForm({ seats: toNumberOrOne(seats.value) })
 }
 
-watch(status, (newStatus) => {
+watch(submitStatus, (newStatus) => {
     if (newStatus === 'success' && data.value?.id) {
         router.push(`/bookings/${data.value.id}/pay`)
     }
@@ -59,7 +59,9 @@ watch(status, (newStatus) => {
 
 <template>
     <NuxtLayout v-slot="{ user }">
-        <h1 class="text-4xl mb-4 font-semibold">Book tour</h1>
+        <h1 v-if="['error', 'success'].includes(status)" class="text-4xl mb-4 font-semibold">{{ "Book tour"
+            ?? "Tour not found" }}
+        </h1>
         <div class="border inline-flex rounded-xl">
 
             <TourListItem :tour="tour" :hide-actions="true" />

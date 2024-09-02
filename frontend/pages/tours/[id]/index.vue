@@ -20,6 +20,9 @@ const { data: tour, status } = useFetch<Tour>(url, {
 <template>
     <NuxtLayout name="landing" v-slot="{ user }">
         <div>
+            <h1 v-if="['error'].includes(status)" class="text-4xl mb-4 font-semibold">
+                Tour not found
+            </h1>
             <SingleTour v-if="status == 'success'" :user="user" :tour="tour" />
         </div>
     </NuxtLayout>

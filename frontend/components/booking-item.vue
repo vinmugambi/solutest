@@ -2,7 +2,7 @@
 import { useFormSubmit } from '~/hooks/useFormSubmit';
 import type { Booking, User } from '~/types';
 
-var props = defineProps<{ user: User | null, booking: Booking | null }>()
+var props = defineProps<{ user: User | null, booking: Booking | null, paying?: boolean }>()
 
 var endpoint = useRuntimeConfig().public.bookingsEndpoint
 
@@ -47,21 +47,23 @@ watch(status, (newStatus) => {
                 </ul>
             </div>
         </div>
-        <div v-if="booking.status == 'pending' && user" class="p-3 bg-neutral-100 mt-2 rounded-xl">
-            <div v-if="user.role == 'admin'" class="flex justify-between items-center">
+        <div v-if="booking.status == 'pending' && user && !paying" class="p-3 bg-neutral-100 mt-2 rounded-xl">
+            <div v-if="user.role == 'admin'" class="flex justify-between items-center gap-4">
                 <p>
-                    Check if the user has made payment and confirm booking
+                    {{ status == 'success' ? 'Booking has been confirmed' : `Check if the user has made payment
+                    andconfirm booking` }}
                 </p>
-                <UButton @click="confirmBooking">Confirm booking</UButton>
+                <UButton v-if="status !== 'success'" @click="confirmBooking">Confirm booking</UButton>
             </div>
 
-            <div v-if="user.role == 'user'" class="flex justify-between items-center">
-                <p>
-                    Pay for this booking to confirm it
-                </p>
-                <UButton :to="`/bookings/${booking.id}/pay`">Pay ksh {{ (booking.tickets.length *
-                    booking.tour.price).toFixed(0) }}</UButton>
-
+            <div v-if="user.role == 'user'" class="">
+                <div v-if="!paying" class="flex justify-between items-center gap-4">
+                    <p>
+                        Confirm this booking by making payment within 24 hours
+                    </p>
+                    <UButton :to="`/bookings/${booking.id}/pay`">Pay ksh {{ (booking.tickets.length *
+                        booking.tour.price).toFixed(0) }}</UButton>
+                </div>
             </div>
             <div v-if="status === 'error'" class="text-sm text-red-500 mt-2">
                 {{ errorMessage }}

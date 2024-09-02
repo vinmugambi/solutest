@@ -17,5 +17,8 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
 export var fetchUser = async () => {
   var profileEndpoint = useRuntimeConfig().public.profileEndpoint;
-  return await $fetch<User>(profileEndpoint, {});
+  const headers = useRequestHeaders(["cookie"]);
+  return await $fetch<User>(profileEndpoint, {
+    headers,
+  });
 };
