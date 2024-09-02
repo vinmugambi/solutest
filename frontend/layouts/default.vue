@@ -5,7 +5,7 @@
 
         </header>
         <div v-if="!data?.role && ['success', 'error'].includes(status)" class="flex flex-col items-center py-16">
-            <h1 class="text-3xl font-semibold pb-4">Not authorized</h1>
+            <h1 class="text-3xl font-semibold pb-4">Login to continue</h1>
             <div class="flex gap-2 justify-center">
                 <UButton :to="`/auth?action=login&redirect=${currentPath}`">Login</UButton>
             </div>
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-const { data, status, error, logout, currentPath } = await useAuth();
+const { data, status, error, logout, currentPath } = await useAuth(false);
 
 </script>
 

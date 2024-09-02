@@ -1,8 +1,9 @@
 <template>
     <NuxtLink v-if="tour?.id" :to="`/tours/${tour.id}`" class="">
-        <div class="flex gap-4 max-w-lg py-4 rounded-xl hover:text-gray-900 hover:bg-gray-100 px-3">
+        <div class="py-4 rounded-xl hover:text-gray-900 hover:bg-gray-100 px-3">
 
-            <div class="flex-1 flex flex-col space-y-2">
+
+            <div class="">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xl font-serif  font-semibold text-gray-800">{{ tour.name }}</h2>
                 </div>
@@ -11,7 +12,7 @@
                     <span class="text-sm ">{{ formatDate(tour.start_time) }}</span>
 
                 </div>
-                <p class="text-gray-600 w-96 truncate text-sm">{{ tour.description }}</p>
+                <p class="w-full text-gray-600 truncate md:whitspace-normal">{{ tour.description }}</p>
 
                 <div class="flex gap-2 text-xs text-gray-500">
                     <span class="text-gray-600">{{ tour.capacity - tour.slots }}</span> already booked

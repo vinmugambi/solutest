@@ -3,7 +3,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useApiRoutes } from "~/composables/useApiRoutes";
 import type { User } from "~/types";
 
-export async function useAuth() {
+export async function useAuth(allowAnonymous: Boolean = true) {
   const { profileEndpoint, logoutEndpoint } = useApiRoutes();
   const headers = useRequestHeaders(["cookie"]);
   const router = useRouter();
@@ -15,15 +15,12 @@ export async function useAuth() {
     credentials: "include",
   }).catch();
 
-  // Watch the status and redirect to login if there's an error
   watch(status, (val) => {
-    console.log("authStatus", status, error);
-    if (val == "error") {
-      router.push("/auth?action=login");
-    }
+    // if (!allowAnonymous && val == "error") {
+    //   router.push("/auth?action=login");
+    // }
   });
 
-  // Function to handle logout
   function logout() {
     $fetch(logoutEndpoint, {
       method: "POST",

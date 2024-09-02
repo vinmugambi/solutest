@@ -8,6 +8,7 @@
                 Travel, meet people, try something new
             </p>
         </div>
+
         <TourList />
     </NuxtLayout>
 </template>
