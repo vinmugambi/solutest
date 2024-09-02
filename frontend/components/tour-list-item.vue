@@ -1,27 +1,29 @@
 <template>
-    <NuxtLink v-if="tour?.id" :to="`/tours/${tour.id}`" class="">
+    <NuxtLink v-if="tour?.id" :to="`/tours/${tour.id}`" class="block">
         <div class="py-4 rounded-xl hover:text-gray-900 hover:bg-gray-100 px-3">
 
 
-            <div class="">
+            <div class="block">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xl font-serif  font-semibold text-gray-800">{{ tour.name }}</h2>
                 </div>
                 <div class="flex justify-between">
-                    <span class="text-sm italic">{{ tour.destination.name }}</span>
-                    <span class="text-sm ">{{ formatDate(tour.start_time) }}</span>
-
+                    <div class="text-sm italic">{{ tour.destination.name }}</div>
+                    <div class="text-sm ">{{ formatDate(tour.start_time) }}</div>
                 </div>
-                <p class="w-full text-gray-600 truncate md:whitspace-normal">{{ tour.description }}</p>
+                <p class="text-gray-600 truncate box-border">{{ tour.description }}
+                </p>
+
+
 
                 <div class="flex gap-2 text-xs text-gray-500">
-                    <span class="text-gray-600">{{ tour.capacity - tour.slots }}</span> already booked
-                    <span class="text-gray-600">{{ tour.slots }}</span> slots available
+                    <div class="text-gray-600">{{ tour.capacity - tour.slots }}</div> already booked
+                    <div class="text-gray-600">{{ tour.slots }}</div> slots available
                 </div>
                 <div class="flex gap-2 items-center">
                     <div>
-                        <span class="font-mono text-sm uppercase">ksh </span>
-                        <span class="text-lg font-medium font-mono"> {{ tour.price.toFixed(0) }}</span>
+                        <div class="font-mono text-sm uppercase">ksh </div>
+                        <div class="text-lg font-medium font-mono"> {{ tour.price.toFixed(0) }}</div>
 
                     </div>
 

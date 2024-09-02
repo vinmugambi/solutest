@@ -58,8 +58,7 @@ watch(submitStatus, (newStatus) => {
         <h1 v-if="['error', 'success'].includes(status)" class="text-4xl mb-4 font-semibold">{{ "Book tour"
             ?? "Tour not found" }}
         </h1>
-        <div class="border inline-flex rounded-xl">
-
+        <div class="border rounded-xl max-w-md">
             <TourListItem :tour="tour" :hide-actions="true" />
         </div>
 

@@ -30,25 +30,8 @@ watch(status, (newStatus) => {
 </script>
 
 <template>
-    <div v-if="booking" class="border rounded-xl p-4 ">
-        <div class="flex flex-wrap gap-8">
-            <TourListItem :tour="booking.tour" :hide-actions="true" class="bg-neutral-50 flex-1 rounded-xl" />
-            <div class="p-4 flex-1">
-                <div class="flex justify-between items-center">
-                    <div class="text-gray-600 text-sm">
-                        #{{ booking.id }} {{ booking.status.toLocaleUpperCase() }}
-                    </div>
-                    <h4 class="font-bold text-right pb-2">Tickets</h4>
-
-                </div>
-                <ul>
-                    <li v-for="ticket of booking.tickets" class="py-1 border-t text-right">
-                        {{ ticket.ticket_number }}
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div v-if="booking.status == 'pending' && user && !paying" class="p-3 bg-neutral-100 mt-2 rounded-xl">
+    <div v-if="booking" class="border rounded-3xl p-4 ">
+        <div v-if="booking.status == 'pending' && user && !paying" class="p-3 bg-neutral-100 mb-2 rounded-xl">
             <div v-if="user.role == 'admin'" class="flex justify-between items-center gap-4">
                 <p>
                     {{ status == 'success' ? 'Booking has been confirmed' : `Check if the user has made payment
@@ -69,8 +52,27 @@ watch(status, (newStatus) => {
             <div v-if="status === 'error'" class="text-sm text-red-500 mt-2">
                 {{ errorMessage }}
             </div>
-
         </div>
+        <div class="flex flex-wrap gap-8">
+            <div class="min-w-0">
+                <TourListItem :tour="booking.tour" :hide-actions="true" class="bg-neutral-50  rounded-xl" />
+            </div>
+            <div class="p-4 flex-1">
+                <div class="flex justify-between items-center">
+                    <div class="text-gray-600 text-sm">
+                        #{{ booking.id }} {{ booking.status.toLocaleUpperCase() }}
+                    </div>
+                    <h4 class="font-bold text-right pb-2">Tickets</h4>
+
+                </div>
+                <ul>
+                    <li v-for="ticket of booking.tickets" class="py-1 border-t text-right">
+                        {{ ticket.ticket_number }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
     </div>
 
 </template>

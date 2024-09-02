@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   modules: ["@nuxt/ui", "@nuxt/image"],
   runtimeConfig: {
     public: {
-      apiBase: "http://localhost:8000",
+      apiBase: "https://twaa-server.fly.dev",
     },
   },
 });
